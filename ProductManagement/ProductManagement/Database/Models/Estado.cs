@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProductManagement.Database.Models
-{
-    public class Estado
-    {
+namespace ProductManagement.Database.Models {
+    public class Estado {
 
         [Key]
         public int Id { get; set; }

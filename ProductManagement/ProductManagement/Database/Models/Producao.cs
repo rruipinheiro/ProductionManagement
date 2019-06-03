@@ -12,9 +12,7 @@ namespace ProductManagement.Database.Models
         [Key]
         public int Id { get; set; }
 
-        
         public enum Tipo { Par, Esquerdo, Direito }
-        public enum Estado { Produzir, ParaProduzir, Concluido }
 
         [Required]
         public DateTime Inicio { get; set; }
