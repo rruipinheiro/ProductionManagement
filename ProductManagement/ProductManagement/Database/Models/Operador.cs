@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProductManagement.Database.Models
-{
-    public class Operador
-    {
+namespace ProductManagement.Database.Models {
+    public class Operador {
 
         [Key]
         public int Id { get; set; }
@@ -18,8 +16,12 @@ namespace ProductManagement.Database.Models
         [Required]
         public int Numero { get; set; }
 
+        public int UserId { get; set; }
+        public virtual User User { get; set; }
+
         public ICollection<OrdemProducao> OrdemProducoes { get; set; }
         public ICollection<Pausa> Pausas { get; set; }
+
 
     }
 }
