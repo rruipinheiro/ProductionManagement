@@ -19,6 +19,7 @@ namespace ProductManagement.Database.Models
         public int Numero { get; set; }
 
         public ICollection<OrdemProducao> OrdemProducoes { get; set; }
-        public ICollection<Operador> Operadores { get; set; }
+        public ICollection<Pausa> Pausas { get; set; }
+
     }
 }
