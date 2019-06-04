@@ -42,6 +42,7 @@ namespace ProductManagement
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<DatabaseContext>();
 
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
