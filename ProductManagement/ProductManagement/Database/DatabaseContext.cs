@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProductManagement.Database.Models;
@@ -25,6 +26,22 @@ namespace ProductManagement.Database {
 
             base.OnModelCreating(modelBuilder);
 
+            var hasher = new PasswordHasher<User>();
+
+            modelBuilder.Entity<User>().ToTable("User").Property(p => p.Id).HasColumnName("UserId");
+
+            modelBuilder.Entity<User>().HasData(new User() {
+                Id = "1",
+                UserName = "rui@gmail.com",
+                NormalizedUserName = "RUI@GMAIL.COM",
+                Email = "rui@gmail.com",
+                NormalizedEmail = "RUI@GMAIL.COM",
+                EmailConfirmed = true,
+                PasswordHash = hasher.HashPassword(null, "123456"),
+                SecurityStamp = string.Empty,
+                OperadorId = 1
+            });
+
             modelBuilder.Entity<OrdemProducao>().HasData(new OrdemProducao() {
                 Id = 1,
                 Tamanho = 40,
@@ -38,7 +55,6 @@ namespace ProductManagement.Database {
             modelBuilder.Entity<Sola>().HasData(new Sola() {
                 Id = 1,
                 Nome = "Sola Trade",
-
             });
 
             modelBuilder.Entity<Producao>().HasData(new Producao()
@@ -74,6 +90,7 @@ namespace ProductManagement.Database {
                 Id = 1,
                 Nome = "Manuel Silva",
                 Numero = 123456,
+                UserId = 1
             });
 
             modelBuilder.Entity<Pausa>().HasData(new Pausa()
