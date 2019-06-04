@@ -12,8 +12,6 @@ namespace ProductManagement.Database.Models
         [Key]
         public int Id { get; set; }
 
-        public enum Tipo { Par, Esquerdo, Direito }
-
         [Required]
         public DateTime Inicio { get; set; }
 

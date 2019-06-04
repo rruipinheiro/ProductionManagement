@@ -17,6 +17,7 @@ namespace ProductManagement.Database.Models
 
         [Required]
         public int MaquinaId { get; set; }
+        public Maquina Maquina { get; set; }
 
         public ICollection<Registo> Registos { get; set; }
     }
