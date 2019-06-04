@@ -25,11 +25,9 @@ namespace ProductManagement.Database.Models
         public int SolaId { get; set; }
         public Sola Sola { get; set; }
 
-        [Required]
         public int MaquinaId { get; set; }
         public Maquina Maquina { get; set; }
 
-        [Required]
         public int OperadorId { get; set; }
         public Operador Operador { get; set; }
 
