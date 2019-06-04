@@ -9,36 +9,34 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using ProductManagement.Database.Models;
 
-namespace ProductManagement.Areas.Identity.Pages.Account
-{
+namespace ProductManagement.Areas.Identity.Pages.Account {
+
     [AllowAnonymous]
-    public class LogoutModel : PageModel
-    {
+    public class LogoutModel : PageModel {
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
-        public LogoutModel(SignInManager<User> signInManager, ILogger<LogoutModel> logger)
-        {
+        public LogoutModel(SignInManager<User> signInManager, ILogger<LogoutModel> logger) {
             _signInManager = signInManager;
             _logger = logger;
         }
 
-        public void OnGet()
-        {
-        }
+        //public void OnGet() {}
 
-        public async Task<IActionResult> OnPost(string returnUrl = null)
-        {
+        public async Task<IActionResult> OnGet(string returnUrl = null){
+
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            if (returnUrl != null)
-            {
+
+            return LocalRedirect("/Index");
+
+            /*if (returnUrl != null) {
                 return LocalRedirect(returnUrl);
-            }
-            else
-            {
+            } else {
                 return Page();
-            }
+            }*/
+
         }
+
     }
 }

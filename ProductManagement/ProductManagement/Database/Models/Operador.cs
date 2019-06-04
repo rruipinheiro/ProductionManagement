@@ -22,6 +22,5 @@ namespace ProductManagement.Database.Models {
         public ICollection<OrdemProducao> OrdemProducoes { get; set; }
         public ICollection<Pausa> Pausas { get; set; }
 
-
     }
 }

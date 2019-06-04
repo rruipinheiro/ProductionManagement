@@ -38,7 +38,9 @@ namespace ProductManagement {
                 config.SignIn.RequireConfirmedEmail = false;
             }).AddEntityFrameworkStores<DatabaseContext>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().AddRazorPagesOptions(options => {
+                options.Conventions.AuthorizeFolder("/");
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
