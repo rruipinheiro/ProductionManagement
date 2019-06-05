@@ -31,28 +31,31 @@
                     @Html.DisplayNameFor(model => model.Producao[0].Estado)
                 </th>
                 <th>Histórico</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Producao)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OrdemProducao.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OrdemProducao.Sola.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Defeito.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Estado.Id)
-                    </td>
-                    <td>
-                        <a asp-area="" asp-page="/Historico/Index" asp-route-id="@item.OrdemProducaoId">Ver</a>
-                    </td>
-                </tr>
+            @foreach (var item in Model.Producao) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrdemProducao.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrdemProducao.Sola.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Defeito.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado.Nome)
+                </td>
+                <td>
+                    <a asp-area="" asp-page="/Historico/Index" asp-route-id="@item.OrdemProducaoId">Ver</a>
+                </td>
+                <td>
+                    <a asp-page="./Par/Index" asp-route-id="@item.Id">Edit</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

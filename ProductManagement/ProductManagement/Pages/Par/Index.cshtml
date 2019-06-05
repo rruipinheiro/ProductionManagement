@@ -1,0 +1,73 @@
+﻿@page
+@model ProductManagement.Pages.Par.IndexModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="pb-2 mt-4 mb-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <h2>Sola Trade **</h2>
+        </div>
+        <div class="col-sm-12 col-md-6 text-right">
+            <h2>
+                <a asp-page="../Index" class="back_icon"><i class="far fa-arrow-alt-circle-left"></i></a>
+            </h2>
+        </div>
+    </div>
+</div>
+
+<div class="pb-2 mt-4 mb-4">
+    <div class="d-flex justify-content-between">
+        <div class="text-center">
+            <h2>@ViewData["TemperaturaSensor"]</h2>
+            <p>Temperatura</p>
+        </div>
+        <div class="text-center">
+            <h2>@ViewData["PressaoSensor"]</h2>
+            <p>Pressão</p>
+        </div>
+        <div class="text-center">
+            <h2>@ViewData["VelocidadeInjecaoSensor"]</h2>
+            <p>Velocidade de Injeção</p>
+        </div>
+        <div class="text-center">
+            <h2>@ViewData["VelocidadeCarregamentoSensor"]</h2>
+            <p>Velocidade de carregamento</p>
+        </div>
+    </div>
+
+    <div class="productionCounter d-flex justify-content-start">
+        <div class="text-center">
+            <h1>@(Model.Producao.Fim - Model.Producao.Inicio)</h1>
+            <p>Tempo de produção</p>
+        </div>
+    </div>
+
+    <div class="d-flex flex-wrap justify-content-between productionBottomContainer">
+        <div>
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Producao.Id" />
+
+                <div class="form-group">
+                    <select class="form-control-sm">
+                        <option value="Par">Par</option>
+                        <option value="Esquerdo">Esquerdo</option>
+                        <option value="Direito">Direito</option>
+                        <option value="Defeito">Defeito</option>
+                    </select>
+
+                    <select class="form-control-sm" asp-for="Producao.DefeitoId" asp-items="ViewBag.DefeitoId"></select>
+                    <span asp-validation-for="Producao.DefeitoId" class="text-danger"></span>
+
+                    <input type="submit" class="btn btn-sm btn-dark" value="Adicionar Defeito" />
+                </div>
+            </form>
+        </div>
+        <div class="productionNavigation">
+            <span><a href="#"><i class="fas fa-arrow-circle-left icon_navigation"></i></a> P001 <a href="#"><i class="fas fa-arrow-circle-right icon_navigation"></i></a></span>
+        </div>
+    </div>
+</div>

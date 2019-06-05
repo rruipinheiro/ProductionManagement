@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace ProductManagement.Database.Models {
+namespace ProductManagement.Database.Models
+{
     public class Estado {
 
         [Key]
         public int Id { get; set; }
 
-        public enum Tipo { Produzir, ParaProduzir, Concluido }
+        [Required]
+        public string Nome { get; set; }
 
         public ICollection<Producao> Producoes { get; set; }
     }

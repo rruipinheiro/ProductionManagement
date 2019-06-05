@@ -24,3 +24,20 @@
 .back_icon {
     color: black;
 }
+
+/* Producao */
+.productionCounter {
+    margin-top: 50px;
+}
+
+.productionBottomContainer {
+    margin-top: 50px;
+}
+
+.productionNavigation span {
+    font-size: 32px;
+}
+
+.productionNavigation i {
+    color: black;
+}
