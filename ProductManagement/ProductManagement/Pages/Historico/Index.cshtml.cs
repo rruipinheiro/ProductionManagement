@@ -17,18 +17,22 @@ namespace ProductManagement.Pages.Historico {
             _context = context;
         }
 
-        public Producao Producao { get; set; }
+        public IList<Producao> Producao { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id) {
 
             if (id == null) {
                 return NotFound();
             }
+            
+            ViewData["OrdemProducao"] = _context.OrdemProducao.Where(op => op.Id.Equals(id)).Select(op => op.Id).First();
 
             Producao = await _context.Producao
                 .Include(p => p.Defeito)
                 .Include(p => p.Estado)
-                .Include(p => p.OrdemProducao).FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.OrdemProducao.Sola)
+                .Where(p => p.OrdemProducaoId.Equals(id))
+                .ToListAsync();
 
             if (Producao == null) {
                 return NotFound();

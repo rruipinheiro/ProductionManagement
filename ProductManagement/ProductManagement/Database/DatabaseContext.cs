@@ -43,11 +43,17 @@ namespace ProductManagement.Database {
 
             modelBuilder.Entity<OrdemProducao>().HasData(new OrdemProducao() {
                 Id = 1,
-                Tamanho = 40,
-                Quantidade = 300,
                 Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
                 SolaId = 1,
                 MaquinaId = 1,
+                OperadorId = 1
+            });
+
+            modelBuilder.Entity<OrdemProducao>().HasData(new OrdemProducao() {
+                Id = 2,
+                Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                SolaId = 1,
+                MaquinaId = 2,
                 OperadorId = 1
             });
 
@@ -56,13 +62,25 @@ namespace ProductManagement.Database {
                 Nome = "Sola Trade",
             });
 
-            modelBuilder.Entity<Producao>().HasData(new Producao()
-            {
+            modelBuilder.Entity<Producao>().HasData(new Producao() {
                 Id = 1,
+                Tamanho = 40,
+                Quantidade = 300,
                 Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
                 Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
                 OrdemProducaoId = 1,
                 DefeitoId = 1,
+                EstadoId = 1,
+            });
+
+            modelBuilder.Entity<Producao>().HasData(new Producao() {
+                Id = 2,
+                Tamanho = 20,
+                Quantidade = 300,
+                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                OrdemProducaoId = 1,
+                DefeitoId = 2,
                 EstadoId = 1,
             });
 
@@ -150,10 +168,22 @@ namespace ProductManagement.Database {
                 Nome = "A Produzir"
             });
 
+            modelBuilder.Entity<Estado>().HasData(new Estado()
+            {
+                Id = 2,
+                Nome = "Produzido"
+            });
+
             modelBuilder.Entity<Maquina>().HasData(new Maquina()
             {
                 Id = 1,
-                Nome = "Maquina"
+                Nome = "Maquina 1"
+            });
+
+            modelBuilder.Entity<Maquina>().HasData(new Maquina()
+            {
+                Id = 2,
+                Nome = "Maquina 2"
             });
 
             modelBuilder.Entity<Operador>().HasData(new Operador()

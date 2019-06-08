@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{searchString?}"
 @model IndexModel
 @{
     ViewData["Title"] = "Index page";
@@ -9,54 +9,63 @@
         <div class="col-sm-12 col-md-6">
             <h2>Ordens de Produção</h2>
         </div>
-        <div class="col-sm-12 col-md-6">
+        <div class="col-sm-12 col-md-6 text-right">
+            <form>
+                <div class="form-group input-group search-group">
+                    <input class="form-control form-control-sm" placeholder="Pesquisar..." type="text" asp-for="SearchString">
+                    <input class="btn btn-sm btn-dark" type="submit" value="Pesquisar">
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <div class="table-responsive">
     <table class="table table-striped">
-        <thead class="thead-dark">
+        <thead class="thead-blue">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Producao[0].OrdemProducao.Id)
+                    @Html.DisplayNameFor(model => model.OrdemProducao[0].Id)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Producao[0].OrdemProducao.Sola)
+                    @Html.DisplayNameFor(model => model.OrdemProducao[0].Sola)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Producao[0].Defeito)
+                    @Html.DisplayNameFor(model => model.OrdemProducao[0].Maquina)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Producao[0].Estado)
+                    @Html.DisplayNameFor(model => model.OrdemProducao[0].OperadorId)
                 </th>
                 <th>Histórico</th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Producao) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrdemProducao.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrdemProducao.Sola.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Defeito.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estado.Nome)
-                </td>
-                <td>
-                    <a asp-area="" asp-page="/Historico/Index" asp-route-id="@item.OrdemProducaoId">Ver</a>
-                </td>
-                <td>
-                    <a asp-page="./Par/Index" asp-route-id="@item.Id">Edit</a>
-                </td>
-            </tr>
+            @foreach (var item in Model.OrdemProducao)
+            {
+                <tr ondblclick="redirect(@item.Id)">
+                    <td>
+                        @("OP00" + item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sola.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Maquina.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Operador.Nome)
+                    </td>
+                    <td>
+                        <a asp-area="" asp-page="/Historico/Index" asp-route-id="@item.Id">Ver</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
 </div>
+
+<script type="text/javascript">
+    function redirect(prodId) {
+        location.href = "/Par?prodId=" + prodId + "&parId=1";
+    }
+</script>

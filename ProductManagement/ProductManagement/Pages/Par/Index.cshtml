@@ -8,7 +8,7 @@
 <div class="pb-2 mt-4 mb-4">
     <div class="row">
         <div class="col-sm-12 col-md-6">
-            <h2>Sola Trade **</h2>
+            <h2>@ViewData["ParName"] Tamanho @ViewData["ParSize"]</h2>
         </div>
         <div class="col-sm-12 col-md-6 text-right">
             <h2>
@@ -44,7 +44,9 @@
             <p>Tempo de produção</p>
         </div>
     </div>
-
+    <form method="post">
+        <input class="btn btn-sm btn-primary" type="submit" asp-page-handler="Pausa" value="Pausa">
+    </form>
     <div class="d-flex flex-wrap justify-content-between productionBottomContainer">
         <div>
             <form method="post">
@@ -52,7 +54,7 @@
                 <input type="hidden" asp-for="Producao.Id" />
 
                 <div class="form-group">
-                    <select class="form-control-sm">
+                    <select class="form-control-sm" asp-for="Producao.Tipo">
                         <option value="Par">Par</option>
                         <option value="Esquerdo">Esquerdo</option>
                         <option value="Direito">Direito</option>
@@ -61,12 +63,20 @@
                     <select class="form-control-sm" asp-for="Producao.DefeitoId" asp-items="ViewBag.DefeitoId"></select>
                     <span asp-validation-for="Producao.DefeitoId" class="text-danger"></span>
 
-                    <input type="submit" class="btn btn-sm btn-dark" value="Adicionar Defeito" />
+                    <input class="btn btn-sm btn-dark" type="submit" asp-page-handler="Defeito" value="Adicionar Defeito" />
                 </div>
             </form>
         </div>
         <div class="productionNavigation">
-            <span><a href="#"><i class="fas fa-arrow-circle-left icon_navigation"></i></a> P001 <a href="#"><i class="fas fa-arrow-circle-right icon_navigation"></i></a></span>
+            <a asp-area="" asp-page="" asp-route-prodId="@(HttpContext.Request.Query["prodId"].ToString())" asp-route-parId="@TempData["backPar"]">
+                <i class="fas fa-arrow-circle-left icon_navigation"></i>
+            </a>
+            <span>
+                P00@(HttpContext.Request.Query["parId"].ToString())
+            </span>
+            <a asp-area="" asp-page="" asp-route-prodId="@(HttpContext.Request.Query["prodId"].ToString())" asp-route-parId="@TempData["nextPar"]">
+                <i class="fas fa-arrow-circle-right icon_navigation"></i>
+            </a>
         </div>
     </div>
 </div>

@@ -1,18 +1,22 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProductManagement.Database.Models
-{
-    public class Producao
-    {
+namespace ProductManagement.Database.Models {
+    public class Producao {
 
         [Key]
         public int Id { get; set; }
 
         public string Tipo { get; set; }
+
+        [Required]
+        public int Tamanho { get; set; }
+
+        [Required]
+        public int Quantidade { get; set; }
 
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:MM:ss tt}")]
@@ -26,7 +30,6 @@ namespace ProductManagement.Database.Models
         public int OrdemProducaoId { get; set; }
         public OrdemProducao OrdemProducao { get; set; }
 
-        [Required]
         public int DefeitoId { get; set; }
         public Defeito Defeito { get; set; }
 
