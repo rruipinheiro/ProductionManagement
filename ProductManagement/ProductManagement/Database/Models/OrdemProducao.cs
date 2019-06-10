@@ -25,6 +25,6 @@ namespace ProductManagement.Database.Models {
         public int OperadorId { get; set; }
         public Operador Operador { get; set; }
 
-        public ICollection<Producao> Producoes { get; set; }
+        public ICollection<ItemProducao> Producoes { get; set; }
     }
 }

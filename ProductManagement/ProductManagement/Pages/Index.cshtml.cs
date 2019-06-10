@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ProductManagement.Database.Models;
 using System.Linq;
-using System;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProductManagement.Pages {
+
     public class IndexModel : PageModel {
 
         private readonly Database.DatabaseContext _context;
@@ -16,36 +16,44 @@ namespace ProductManagement.Pages {
             _context = context;
         }
 
-        [BindProperty(SupportsGet = true)]
-        public string SearchString { get; set; }
+        public class OrdemProducaoModel {
 
-        public IList<OrdemProducao> OrdemProducao { get; set; }
+            public int Id { get; set; }
+            public string Sola { get; set; }
 
-        public async Task OnGetAsync() {
-
-            /*var OrdemProducaoList = (from op in _context.OrdemProducao
-                                     join p in _context.Producao 
-                                     on op.Id equals p.OrdemProducaoId
-                                     select new {
-                                          op.Id,
-                                          Sola = op.Sola.Nome,
-                                          Defeito = _context.Producao.Where(prod => prod.DefeitoId == prod.DefeitoId).Count(),
-                                          Estado = p.Estado.Id
-                                      }).ToList();*/
-
-            var searchOP = from m in _context.OrdemProducao
-                             select m;
-
-            if (!string.IsNullOrEmpty(SearchString)) {
-                searchOP = _context.OrdemProducao.Where(s => s.Sola.Nome.Contains(SearchString));
-            }
-
-            OrdemProducao = await searchOP
-                .Include(p => p.Sola)
-                .Include(p => p.Maquina)
-                .Include(p => p.Operador)
-                .ToListAsync();
+            [Display(Name = "Nº de defeitos")]
+            public int Defeito { get; set; }
+            public string Estado { get; set; }
 
         }
+
+        [BindProperty(SupportsGet = true)]
+        public string Search { get; set; }
+
+        [BindProperty]
+        public List<OrdemProducaoModel> OrdemProducao { get; set; }
+             
+        public async Task OnGetAsync() {
+
+            var searchOP = _context.OrdemProducao.Select(op => new OrdemProducaoModel {
+                Id = op.Id,
+                Sola = op.Sola.Nome,
+                Defeito = _context.ItemProducao.Where(p => p.OrdemProducaoId == op.Id && p.DefeitoId > 1).Select(d => d.DefeitoId).Count(),
+                Estado = _context.ItemProducao.Where(p => p.OrdemProducaoId == op.Id && p.EstadoId == 3).Count() == _context.ItemProducao.Where(p => p.OrdemProducaoId == op.Id).Count() ? "Produzido" : _context.ItemProducao.Where(p => p.OrdemProducaoId == op.Id && p.EstadoId == 2).Count() > 0 ? "A Produzir" : "Para Produzir"
+            });
+
+            if (!string.IsNullOrEmpty(Search)) {
+                searchOP = _context.OrdemProducao.Select(op => new OrdemProducaoModel {
+                    Id = op.Id,
+                    Sola = op.Sola.Nome,
+                    Defeito = _context.ItemProducao.Where(p => p.OrdemProducaoId == op.Id && p.DefeitoId > 1).Select(d => d.DefeitoId).Count(),
+                    Estado = _context.ItemProducao.Where(p => p.OrdemProducaoId == op.Id && p.EstadoId == 3).Count() == _context.ItemProducao.Where(p => p.OrdemProducaoId == op.Id).Count() ? "Produzido" : _context.ItemProducao.Where(p => p.OrdemProducaoId == op.Id && p.EstadoId == 2).Count() > 0 ? "A Produzir" : "Para Produzir"
+                }).Where(s => s.Sola.Contains(Search) || s.Id.ToString().Contains(Search));
+            }
+
+            OrdemProducao = await searchOP.ToListAsync();
+
+        }
+
     }
 }

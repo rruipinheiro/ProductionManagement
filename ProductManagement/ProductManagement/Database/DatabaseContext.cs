@@ -12,7 +12,7 @@ namespace ProductManagement.Database {
 
         public DbSet<Operador> Operador { get; set; }
         public DbSet<OrdemProducao> OrdemProducao { get; set; }
-        public DbSet<Producao> Producao { get; set; }
+        public DbSet<ItemProducao> ItemProducao { get; set; }
         public DbSet<Defeito> Defeito { get; set; }
         public DbSet<Estado> Estado { get; set; }
         public DbSet<Maquina> Maquina { get; set; }
@@ -53,7 +53,16 @@ namespace ProductManagement.Database {
                 Id = 2,
                 Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
                 SolaId = 1,
-                MaquinaId = 2,
+                MaquinaId = 1,
+                OperadorId = 1
+            });
+
+            modelBuilder.Entity<OrdemProducao>().HasData(new OrdemProducao()
+            {
+                Id = 3,
+                Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                SolaId = 1,
+                MaquinaId = 1,
                 OperadorId = 1
             });
 
@@ -62,8 +71,9 @@ namespace ProductManagement.Database {
                 Nome = "Sola Trade",
             });
 
-            modelBuilder.Entity<Producao>().HasData(new Producao() {
+            modelBuilder.Entity<ItemProducao>().HasData(new ItemProducao() {
                 Id = 1,
+                ParId = 1,
                 Tamanho = 40,
                 Quantidade = 300,
                 Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
@@ -73,8 +83,9 @@ namespace ProductManagement.Database {
                 EstadoId = 1,
             });
 
-            modelBuilder.Entity<Producao>().HasData(new Producao() {
+            modelBuilder.Entity<ItemProducao>().HasData(new ItemProducao() {
                 Id = 2,
+                ParId = 2,
                 Tamanho = 20,
                 Quantidade = 300,
                 Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
@@ -84,93 +95,159 @@ namespace ProductManagement.Database {
                 EstadoId = 1,
             });
 
+
+            modelBuilder.Entity<ItemProducao>().HasData(new ItemProducao()
+            {
+                Id = 3,
+                ParId = 1,
+                Tamanho = 20,
+                Quantidade = 300,
+                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                OrdemProducaoId = 2,
+                DefeitoId = 2,
+                EstadoId = 3,
+            });
+
+            modelBuilder.Entity<ItemProducao>().HasData(new ItemProducao()
+            {
+                Id = 4,
+                ParId = 2,
+                Tamanho = 20,
+                Quantidade = 300,
+                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                OrdemProducaoId = 2,
+                DefeitoId = 2,
+                EstadoId = 2,
+            });
+
+            
+            modelBuilder.Entity<ItemProducao>().HasData(new ItemProducao()
+            {
+                Id = 5,
+                ParId = 1,
+                Tamanho = 20,
+                Quantidade = 300,
+                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                OrdemProducaoId = 3,
+                DefeitoId = 2,
+                EstadoId = 3,
+            });
+
+            modelBuilder.Entity<ItemProducao>().HasData(new ItemProducao()
+            {
+                Id = 6,
+                ParId = 2,
+                Tamanho = 20,
+                Quantidade = 300,
+                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                OrdemProducaoId = 3,
+                DefeitoId = 2,
+                EstadoId = 3,
+            });
+
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
                 Id = 1,
-                Nome = "Sola incompleta"
+                Nome = "Sem defeito"
             });
 
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
                 Id = 2,
-                Nome = "Sola chupada"
+                Nome = "Sola incompleta"
             });
 
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
                 Id = 3,
-                Nome = "Sola mal fechada"
+                Nome = "Sola chupada"
             });
 
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
                 Id = 4,
-                Nome = "Sola com rebarba"
+                Nome = "Sola mal fechada"
             });
 
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
                 Id = 5,
-                Nome = "Sola com marca no ponto de injeção"
+                Nome = "Sola com rebarba"
             });
 
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
                 Id = 6,
+                Nome = "Sola com marca no ponto de injeção"
+            });
+
+            modelBuilder.Entity<Defeito>().HasData(new Defeito()
+            {
+                Id = 7,
                 Nome = "Sola com riscos"
             });
 
 
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
-                Id = 7,
+                Id = 8,
                 Nome = "Solas com arrastamento"
             });
 
 
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
-                Id = 8,
+                Id = 9,
                 Nome = "Solas delaminadas"
             });
 
 
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
-                Id = 9,
+                Id = 10,
                 Nome = "Solas cor incorreta"
             });
 
 
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
-                Id = 10,
+                Id = 11,
                 Nome = "Solas com bolhas de ar/gás"
             });
 
 
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
-                Id = 11,
+                Id = 12,
                 Nome = "Solas com contaminações"
             });
 
 
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
-                Id = 12,
+                Id = 13,
                 Nome = "Sola deformada"
             });
 
             modelBuilder.Entity<Estado>().HasData(new Estado()
             {
                 Id = 1,
-                Nome = "A Produzir"
+                Nome = "Para Produzir"
             });
 
             modelBuilder.Entity<Estado>().HasData(new Estado()
             {
                 Id = 2,
+                Nome = "A Produzir"
+            });
+
+            modelBuilder.Entity<Estado>().HasData(new Estado()
+            {
+                Id = 3,
                 Nome = "Produzido"
             });
 

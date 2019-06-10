@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ProductManagement.Database;
 using ProductManagement.Database.Models;
 
-namespace ProductManagement.Pages.Par {
+namespace ProductManagement.Pages.Producao {
 
     public class IndexModel : PageModel {
 
@@ -18,7 +18,7 @@ namespace ProductManagement.Pages.Par {
             _context = context;
         }
         [BindProperty]
-        public Producao Producao { get; set; }
+        public ItemProducao Producao { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? prodId, int? parId) {
 
@@ -35,13 +35,14 @@ namespace ProductManagement.Pages.Par {
             TempData["backPar"] = ProducaoExists(prodId, parId - 1) ? parId - 1 : parId;
 
             // Returna o Nome e o Tamanho da Sola actual
-            ViewData["ParName"] = await _context.Producao.Where(p => p.OrdemProducaoId.Equals(prodId) && p.Id.Equals(parId)).Select(p => p.OrdemProducao.Sola.Nome).FirstAsync();
-            ViewData["ParSize"] = await _context.Producao.Where(p => p.OrdemProducaoId.Equals(prodId) && p.Id.Equals(parId)).Select(p => p.Tamanho).FirstAsync();
+            ViewData["ParName"] = await _context.ItemProducao.Where(p => p.OrdemProducaoId.Equals(prodId) && p.ParId.Equals(parId)).Select(p => p.OrdemProducao.Sola.Nome).FirstAsync();
+            ViewData["ParSize"] = await _context.ItemProducao.Where(p => p.OrdemProducaoId.Equals(prodId) && p.ParId.Equals(parId)).Select(p => p.Tamanho).FirstAsync();
 
-            Producao = await _context.Producao
+            Producao = await _context.ItemProducao
                 .Include(p => p.Defeito)
                 .Include(p => p.Estado)
-                .Include(p => p.OrdemProducao).FirstOrDefaultAsync(m => m.Id.Equals(prodId));
+                .Include(p => p.OrdemProducao)
+                .FirstOrDefaultAsync(m => m.OrdemProducaoId.Equals(prodId));
 
             if (Producao == null) {
                 return NotFound();
@@ -88,50 +89,50 @@ namespace ProductManagement.Pages.Par {
 
         public async Task<IActionResult> OnPostDefeitoAsync() {
 
-            if (!ModelState.IsValid) {
-                return Page();
-            }
+             if (!ModelState.IsValid) {
+                 return Page();
+             }
 
-            var result = await _context.Producao
-               .Where(p => p.Id == Producao.Id)
-               .SingleOrDefaultAsync();
-
-            result.DefeitoId = Producao.DefeitoId;
-            result.Tipo = Producao.Tipo;
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
-        }
-
-        public async Task<IActionResult> OnPostPausaAsync() {
-
-            if (!ModelState.IsValid)
-            {
-                string messages = string.Join("; ", ModelState.Values
-                        .SelectMany(x => x.Errors)
-                        .Select(x => x.ErrorMessage));
-
-                Console.WriteLine(" =============== {0} ===============", messages);
-
-                return Page();
-            }
-
-            var result = await _context.Pausa
-                .Include(p => p.Operador)
-                .Where(p => p.Operador.User.UserName.Equals(User.Identity.Name))
+             var result = await _context.ItemProducao
+                .Where(p => p.Id == Producao.Id)
                 .SingleOrDefaultAsync();
 
-            result.Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-            result.Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-            result.OperadorId = 1;
-            await _context.SaveChangesAsync();
+             result.DefeitoId = Producao.DefeitoId;
+             result.Tipo = Producao.Tipo;
+             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+             return RedirectToPage("./Index");
         }
+
+         /*public async Task<IActionResult> OnPostPausaAsync() {
+
+             if (!ModelState.IsValid)
+             {
+                 string messages = string.Join("; ", ModelState.Values
+                         .SelectMany(x => x.Errors)
+                         .Select(x => x.ErrorMessage));
+
+                 Console.WriteLine(" =============== {0} ===============", messages);
+
+                 return Page();
+             }
+
+             var result = await _context.Pausa
+                 .Include(p => p.Operador)
+                 .Where(p => p.Operador.User.UserName.Equals(User.Identity.Name))
+                 .SingleOrDefaultAsync();
+
+             result.Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+             result.Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+             result.OperadorId = 1;
+             await _context.SaveChangesAsync();
+
+             return RedirectToPage("./Index");
+         }*/
 
         // Verifica se existe Ordem de Produção e Itens de Produção
         private bool ProducaoExists(int? prodId, int? parId) {
-            return _context.Producao.Where(p => p.OrdemProducaoId.Equals(prodId) && p.Id.Equals(parId)).Any();
+            return _context.ItemProducao.Where(p => p.OrdemProducaoId.Equals(prodId) && p.ParId.Equals(parId)).Any();
         }
 
     }

@@ -1,4 +1,4 @@
-﻿@page "{searchString?}"
+﻿@page "{Search?}"
 @model IndexModel
 @{
     ViewData["Title"] = "Index page";
@@ -12,7 +12,7 @@
         <div class="col-sm-12 col-md-6 text-right">
             <form>
                 <div class="form-group input-group search-group">
-                    <input class="form-control form-control-sm" placeholder="Pesquisar..." type="text" asp-for="SearchString">
+                    <input class="form-control form-control-sm" placeholder="Pesquisar por Id ou Sola" type="text" asp-for="Search">
                     <input class="btn btn-sm btn-dark" type="submit" value="Pesquisar">
                 </div>
             </form>
@@ -31,10 +31,10 @@
                     @Html.DisplayNameFor(model => model.OrdemProducao[0].Sola)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.OrdemProducao[0].Maquina)
+                    @Html.DisplayNameFor(model => model.OrdemProducao[0].Defeito)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.OrdemProducao[0].OperadorId)
+                    @Html.DisplayNameFor(model => model.OrdemProducao[0].Estado)
                 </th>
                 <th>Histórico</th>
             </tr>
@@ -47,13 +47,13 @@
                         @("OP00" + item.Id)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Sola.Nome)
+                        @Html.DisplayFor(modelItem => item.Sola)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Maquina.Nome)
+                        @Html.DisplayFor(modelItem => item.Defeito)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Operador.Nome)
+                        @Html.DisplayFor(modelItem => item.Estado)
                     </td>
                     <td>
                         <a asp-area="" asp-page="/Historico/Index" asp-route-id="@item.Id">Ver</a>
@@ -66,6 +66,6 @@
 
 <script type="text/javascript">
     function redirect(prodId) {
-        location.href = "/Par?prodId=" + prodId + "&parId=1";
+        location.href = "/Producao?prodId=" + prodId + "&parId=1";
     }
 </script>

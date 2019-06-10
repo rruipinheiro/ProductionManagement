@@ -14,6 +14,6 @@ namespace ProductManagement.Database.Models {
         [Required]
         public string Nome { get; set; }
         
-        public ICollection<Producao> Producoes { get; set; }
+        public ICollection<ItemProducao> Producoes { get; set; }
     }
 }

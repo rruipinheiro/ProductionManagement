@@ -1,14 +1,14 @@
-﻿    using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProductManagement.Database.Models {
-    public class Producao {
+    public class ItemProducao {
 
         [Key]
         public int Id { get; set; }
+        
+        [Required]
+        public int ParId{ get; set; }
 
         public string Tipo { get; set; }
 
@@ -30,6 +30,7 @@ namespace ProductManagement.Database.Models {
         public int OrdemProducaoId { get; set; }
         public OrdemProducao OrdemProducao { get; set; }
 
+        [Required]
         public int DefeitoId { get; set; }
         public Defeito Defeito { get; set; }
 
