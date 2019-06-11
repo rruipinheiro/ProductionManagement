@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    TempData["Counter"] = 1;
 }
 
 <div class="pb-2 mt-4 mb-4">
@@ -44,9 +45,7 @@
             <p>Tempo de produção</p>
         </div>
     </div>
-    <form method="post">
-        <input class="btn btn-sm btn-primary" type="submit" asp-page-handler="Pausa" value="Pausa">
-    </form>
+
     <div class="d-flex flex-wrap justify-content-between productionBottomContainer">
         <div>
             <form method="post">
@@ -63,7 +62,7 @@
                     <select class="form-control-sm" asp-for="Producao.DefeitoId" asp-items="ViewBag.DefeitoId"></select>
                     <span asp-validation-for="Producao.DefeitoId" class="text-danger"></span>
 
-                    <input class="btn btn-sm btn-dark" type="submit" asp-page-handler="Defeito" value="Adicionar Defeito" />
+                    <input class="btn btn-sm btn-dark" type="submit" asp-route-prodId="@(ViewContext.HttpContext.Request.Query["prodId"].ToString())" asp-route-parId="@(ViewContext.HttpContext.Request.Query["parId"].ToString())" asp-page-handler="Defeito" value="Adicionar Defeito" />
                 </div>
             </form>
         </div>
@@ -80,3 +79,18 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+   document.addEventListener('DOMContentLoaded', function () {
+
+        $("#btn-pausainicio").click(function () {
+            $(".pausa_fim").show();
+            $(".pausa_inicio").hide();
+        });
+
+        $("#btn-pausafim").click(function () {
+            $(".pausa_fim").hide();
+            $(".pausa_inicio").show();
+        });
+   });
+</script>

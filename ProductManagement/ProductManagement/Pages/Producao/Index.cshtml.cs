@@ -17,6 +17,9 @@ namespace ProductManagement.Pages.Producao {
         public IndexModel(DatabaseContext context) {
             _context = context;
         }
+
+        public Pausa Pausa { get; set; }
+
         [BindProperty]
         public ItemProducao Producao { get; set; }
 
@@ -87,11 +90,15 @@ namespace ProductManagement.Pages.Producao {
             return Page();
         }
 
-        public async Task<IActionResult> OnPostDefeitoAsync() {
+        public async Task<IActionResult> OnPostDefeitoAsync(int? prodId, int? parId) {
 
-             if (!ModelState.IsValid) {
+            if (prodId == null || parId == null) {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid) {
                  return Page();
-             }
+            }
 
              var result = await _context.ItemProducao
                 .Where(p => p.Id == Producao.Id)
@@ -101,34 +108,62 @@ namespace ProductManagement.Pages.Producao {
              result.Tipo = Producao.Tipo;
              await _context.SaveChangesAsync();
 
-             return RedirectToPage("./Index");
+            var _orderProducaoId = await _context.ItemProducao.Where(p => p.Id == Producao.Id).Select(s => s.OrdemProducaoId).FirstOrDefaultAsync();
+            var _parId = await _context.ItemProducao.Where(p => p.OrdemProducaoId == _orderProducaoId).Select(s => s.ParId).CountAsync();
+            var _tamanho = await _context.ItemProducao.Where(p => p.Id == Producao.Id).Select(s => s.Tamanho).FirstOrDefaultAsync();
+            var _quantidade = await _context.ItemProducao.Where(p => p.Id == Producao.Id).Select(s => s.Quantidade).FirstOrDefaultAsync();
+            _context.ItemProducao.Add(new ItemProducao { ParId = _parId + 1, Tamanho = _tamanho, Quantidade = _quantidade, Inicio = Producao.Inicio, Fim = Producao.Fim, OrdemProducaoId = _orderProducaoId, DefeitoId = 1, EstadoId = 1 });
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index", new { prodId, parId });
         }
 
-         /*public async Task<IActionResult> OnPostPausaAsync() {
+        public async Task<IActionResult> OnPostPausaInicioAsync(int? prodId, int? parId) {
 
-             if (!ModelState.IsValid)
-             {
-                 string messages = string.Join("; ", ModelState.Values
-                         .SelectMany(x => x.Errors)
-                         .Select(x => x.ErrorMessage));
+            if (prodId == null || parId == null) {
+                return NotFound();
+            }
 
-                 Console.WriteLine(" =============== {0} ===============", messages);
+            if (!ModelState.IsValid) {
+                return Page();
+            }
 
-                 return Page();
-             }
+            var operadorId = await _context.Operador.Where(o => o.User.UserName.Contains(User.Identity.Name)).Select(o => o.Id).FirstOrDefaultAsync();
 
-             var result = await _context.Pausa
-                 .Include(p => p.Operador)
-                 .Where(p => p.Operador.User.UserName.Equals(User.Identity.Name))
-                 .SingleOrDefaultAsync();
+            var pausa = new Pausa {
+                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                OperadorId = await _context.Pausa.Where(p => p.OperadorId == operadorId).Select(o => o.OperadorId).FirstOrDefaultAsync()
+            };
 
-             result.Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-             result.Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-             result.OperadorId = 1;
-             await _context.SaveChangesAsync();
+            _context.Pausa.Add(pausa);
+            await _context.SaveChangesAsync();
 
-             return RedirectToPage("./Index");
-         }*/
+            return RedirectToPage("./Index", new { prodId, parId });
+        }
+
+
+        public async Task<IActionResult> OnPostPausaFimAsync(int? prodId, int? parId) {
+
+            if (prodId == null || parId == null) {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid) {
+                return Page();
+            }
+
+            var operadorId = await _context.Operador.Where(o => o.User.UserName.Contains(User.Identity.Name)).Select(o => o.Id).FirstOrDefaultAsync();
+
+            var result = await _context.Pausa
+               .Where(p => p.OperadorId == operadorId)
+               .LastAsync();
+
+            result.Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index", new { prodId, parId });
+        }
 
         // Verifica se existe Ordem de Produção e Itens de Produção
         private bool ProducaoExists(int? prodId, int? parId) {

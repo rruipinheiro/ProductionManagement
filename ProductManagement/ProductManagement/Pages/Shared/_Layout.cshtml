@@ -24,6 +24,21 @@
             <a asp-area="" asp-page="/Index"><img src="~/img/logo.png" width="125" height="40" /></a>
         </div>
         <div class="header_right d-flex text-white">
+            @{
+                if (ViewContext.RouteData.Values["Page"].ToString() == "/Producao/Index")
+                {
+                    <div class="pausa_inicio">
+                        <form method="post">
+                            <input class="btn btn-sm btn-info" id="btn-pausainicio" type="submit" asp-route-prodId="@(ViewContext.HttpContext.Request.Query["prodId"].ToString())" asp-route-parId="@(ViewContext.HttpContext.Request.Query["parId"].ToString())" asp-page-handler="PausaInicio" value="Pausa">
+                        </form>
+                    </div>
+                    <div  class="pausa_fim">
+                        <form method="post">
+                            <input class="btn btn-sm btn-danger" id="btn-pausafim" type="submit" asp-route-prodId="@(ViewContext.HttpContext.Request.Query["prodId"].ToString())" asp-route-parId="@(ViewContext.HttpContext.Request.Query["parId"].ToString())" asp-page-handler="PausaFim" value="Pausa">
+                        </form>
+                    </div>
+                }
+            }
             <span id="temperatura_ambiente_sensor"></span>
         </div>
     </header>
