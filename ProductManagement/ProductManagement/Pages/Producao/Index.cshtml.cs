@@ -45,7 +45,7 @@ namespace ProductManagement.Pages.Producao {
                 .Include(p => p.Defeito)
                 .Include(p => p.Estado)
                 .Include(p => p.OrdemProducao)
-                .FirstOrDefaultAsync(m => m.OrdemProducaoId.Equals(prodId));
+                .FirstOrDefaultAsync(m => m.OrdemProducaoId.Equals(prodId) && m.ParId == parId);
 
             if (Producao == null) {
                 return NotFound();
@@ -84,7 +84,7 @@ namespace ProductManagement.Pages.Producao {
                 .Where(s => s.Sensor.Maquina.Id == OrdemMaquinaId && s.SensorId == 4)
                 .Select(t => t.Valor)
                 .SingleOrDefaultAsync();
-
+            
             ViewData["DefeitoId"] = new SelectList(_context.Defeito, "Id", "Nome");
 
             return Page();
