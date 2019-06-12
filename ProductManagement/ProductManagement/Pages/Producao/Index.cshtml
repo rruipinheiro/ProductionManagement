@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "Details";
-    TempData["Counter"] = 1;
 }
 
 <div class="pb-2 mt-4 mb-4">
@@ -13,29 +12,45 @@
         </div>
         <div class="col-sm-12 col-md-6 text-right">
             <h2>
-                <a asp-page="../Index" class="back_icon"><i class="far fa-arrow-alt-circle-left"></i></a>
+                <a asp-area="" asp-page="../Index" class="back_icon"><i class="far fa-arrow-alt-circle-left"></i></a>
             </h2>
         </div>
     </div>
 </div>
 
 <div class="pb-2 mt-4 mb-4">
-    <div class="d-flex justify-content-between">
-        <div class="text-center">
-            <h2>@ViewData["TemperaturaSensor"]</h2>
-            <p>Temperatura</p>
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2>@ViewData["TemperaturaSensor"]</h2>
+                    <p>Temperatura</p>
+                </div>
+            </div>
         </div>
-        <div class="text-center">
-            <h2>@ViewData["PressaoSensor"]</h2>
-            <p>Pressão</p>
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2>@ViewData["PressaoSensor"]</h2>
+                    <p>Pressão</p>
+                </div>
+            </div>
         </div>
-        <div class="text-center">
-            <h2>@ViewData["VelocidadeInjecaoSensor"]</h2>
-            <p>Velocidade de Injeção</p>
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2>@ViewData["VelocidadeInjecaoSensor"]</h2>
+                    <p>Velocidade de Injecao</p>
+                </div>
+            </div>
         </div>
-        <div class="text-center">
-            <h2>@ViewData["VelocidadeCarregamentoSensor"]</h2>
-            <p>Velocidade de carregamento</p>
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2>@ViewData["VelocidadeCarregamentoSensor"]</h2>
+                    <p>Velocidade de Carregamento</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -48,6 +63,14 @@
 
     <div class="d-flex flex-wrap justify-content-between productionBottomContainer">
         <div>
+            @if (TempData["succes_message"] != null) {
+                <div class="alert alert-success" role="alert">
+                    @TempData["succes_message"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
             <form method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Producao.Id" />

@@ -11,7 +11,7 @@
         </div>
         <div class="col-sm-12 col-md-6 text-right">
             <h2>
-                <a asp-page="../Index" class="back_icon"><i class="far fa-arrow-alt-circle-left"></i></a>
+                <a asp-area="" asp-page="../Index" class="back_icon"><i class="far fa-arrow-alt-circle-left"></i></a>
             </h2>
         </div>
     </div>
@@ -39,6 +39,9 @@
         <thead class="thead-dark">
             <tr>
                 <th>
+                    @Html.DisplayNameFor(model => model.Producao[0].ParId)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Producao[0].OrdemProducao.Sola)
                 </th>
                 <th>
@@ -50,15 +53,15 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Producao)
-            {
-                <tr ondblclick="redirect(@item.OrdemProducaoId, @item.ParId)">
-                    <td>@Html.DisplayFor(model => item.OrdemProducao.Sola.Nome)</td>
-                    <td>@Html.DisplayFor(model => item.Tamanho)</td>
-                    <td>
-                        <input type="checkbox" checked="@(item.Defeito.Id > 1 ? "" : "checked")">
-                    </td>
-                </tr>
+            @foreach (var item in Model.Producao){
+            <tr ondblclick="redirect(@item.OrdemProducaoId, @item.ParId)">
+                <td>@("P00" + item.ParId)</td>
+                <td>@Html.DisplayFor(model => item.OrdemProducao.Sola.Nome)</td>
+                <td>@Html.DisplayFor(model => item.Tamanho)</td>
+                <td>
+                    <input type="checkbox" checked="@(item.Defeito.Id > 1 ? true : false)">
+                </td>
+            </tr>
             }
         </tbody>
     </table>
