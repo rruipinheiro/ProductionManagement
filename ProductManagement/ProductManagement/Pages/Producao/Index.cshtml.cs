@@ -111,7 +111,6 @@ namespace ProductManagement.Pages.Producao {
              result.Tipo = Producao.Tipo;
              await _context.SaveChangesAsync();
 
-
             var _orderProducaoId = await _context.ItemProducao.Where(p => p.Id == Producao.Id).Select(s => s.OrdemProducaoId).FirstOrDefaultAsync();
             var _parId = await _context.ItemProducao.Where(p => p.OrdemProducaoId == _orderProducaoId).Select(s => s.ParId).CountAsync();
             var _tamanho = await _context.ItemProducao.Where(p => p.Id == Producao.Id).Select(s => s.Tamanho).FirstOrDefaultAsync();
@@ -134,11 +133,11 @@ namespace ProductManagement.Pages.Producao {
 
                 var parDefeito = await _context.ItemProducao
                     .Where(p => p.Tamanho == _tamanho && p.Tipo == _tipo && p.DefeitoId > 1 && p.OrdemProducaoId == prodId && p.FaseId == 1)
-                    .Select(p => p.Id)
+                    .Select(p => p.ParId)
                     .FirstOrDefaultAsync();
 
                 if(parDefeito > 0) {
-                    TempData["Casar"] = "Tem para casar sim!!!!  " + parDefeito; 
+                    TempData["ParCasar"] = "É possivel a junção do Par P00" + parId + " " + _tipo + " com o Par P00" + parDefeito + " " + Producao.Tipo; 
                 }
             }
 
