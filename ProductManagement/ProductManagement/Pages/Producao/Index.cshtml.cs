@@ -25,11 +25,13 @@ namespace ProductManagement.Pages.Producao {
 
         public async Task<IActionResult> OnGetAsync(int? prodId, int? parId) {
 
-            if (prodId == null || parId == null) {
+            if (prodId == null || parId == null)
+            {
                 return NotFound();
             }
 
-            if(!ProducaoExists(prodId, parId)) {
+            if (!ProducaoExists(prodId, parId))
+            {
                 return NotFound();
             }
 
@@ -84,7 +86,7 @@ namespace ProductManagement.Pages.Producao {
                 .Where(s => s.Sensor.Maquina.Id == OrdemMaquinaId && s.SensorId == 4)
                 .Select(t => t.Valor)
                 .SingleOrDefaultAsync();
-            
+
             ViewData["DefeitoId"] = new SelectList(_context.Defeito, "Id", "Nome");
 
             return Page();
@@ -109,17 +111,34 @@ namespace ProductManagement.Pages.Producao {
              result.Tipo = Producao.Tipo;
              await _context.SaveChangesAsync();
 
+
+            var _orderProducaoId = await _context.ItemProducao.Where(p => p.Id == Producao.Id).Select(s => s.OrdemProducaoId).FirstOrDefaultAsync();
+            var _parId = await _context.ItemProducao.Where(p => p.OrdemProducaoId == _orderProducaoId).Select(s => s.ParId).CountAsync();
+            var _tamanho = await _context.ItemProducao.Where(p => p.Id == Producao.Id).Select(s => s.Tamanho).FirstOrDefaultAsync();
+            var _quantidade = await _context.ItemProducao.Where(p => p.Id == Producao.Id).Select(s => s.Quantidade).FirstOrDefaultAsync();
+
             // Apenas adicona um novo Item de Produção se tiver defeito
-            if(Producao.DefeitoId > 1) {
-                var _orderProducaoId = await _context.ItemProducao.Where(p => p.Id == Producao.Id).Select(s => s.OrdemProducaoId).FirstOrDefaultAsync();
-                var _parId = await _context.ItemProducao.Where(p => p.OrdemProducaoId == _orderProducaoId).Select(s => s.ParId).CountAsync();
-                var _tamanho = await _context.ItemProducao.Where(p => p.Id == Producao.Id).Select(s => s.Tamanho).FirstOrDefaultAsync();
-                var _quantidade = await _context.ItemProducao.Where(p => p.Id == Producao.Id).Select(s => s.Quantidade).FirstOrDefaultAsync();
+            if (Producao.DefeitoId > 1) {
+
                 _context.ItemProducao.Add(new ItemProducao { ParId = _parId + 1, Tamanho = _tamanho, Quantidade = _quantidade, Inicio = Producao.Inicio, Fim = Producao.Fim, OrdemProducaoId = _orderProducaoId, DefeitoId = 1, EstadoId = 1 });
+
+                TempData["succes_message"] = "Defeito adicionado com sucesso!";
+
                 await _context.SaveChangesAsync();
+
             }
 
-            TempData["succes_message"] = "Defeito adicionado com sucesso!";
+            if(Producao.Tipo != "Par" && Producao.DefeitoId != 1) {
+
+                var parDefeito = await _context.ItemProducao
+                    .Where(p => p.Tamanho == _tamanho && p.Tipo != Producao.Tipo && p.DefeitoId == 1 && p.OrdemProducaoId == prodId)
+                    .AnyAsync();
+
+                if(parDefeito) {
+                    TempData["Casar"] = "Tem para casar sim!!!!";
+                }
+
+            }
 
             return RedirectToPage("./Index", new { prodId, parId });
         }
@@ -147,8 +166,7 @@ namespace ProductManagement.Pages.Producao {
 
             return RedirectToPage("./Index", new { prodId, parId });
         }
-
-
+        
         public async Task<IActionResult> OnPostPausaFimAsync(int? prodId, int? parId) {
 
             if (prodId == null || parId == null) {

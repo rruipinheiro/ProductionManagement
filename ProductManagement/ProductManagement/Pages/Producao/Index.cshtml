@@ -63,7 +63,7 @@
 
     <div class="d-flex flex-wrap justify-content-between productionBottomContainer">
         <div>
-            @if (TempData["succes_message"] != null) {
+            @if(TempData["succes_message"] != null) {
                 <div class="alert alert-success" role="alert">
                     @TempData["succes_message"]
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -71,6 +71,9 @@
                     </button>
                 </div>
             }
+
+            <h2>@TempData["Casar"]</h2>
+
             <form method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Producao.Id" />

@@ -52,7 +52,7 @@ tr:hover {
 }
 
 .pausa_fim {
-    display: none !important;
+    /*display: none !important;*/
 }
 /** Main container **/
 .main {

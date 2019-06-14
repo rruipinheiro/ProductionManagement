@@ -31,10 +31,10 @@ namespace ProductManagement.Database {
 
             modelBuilder.Entity<User>().HasData(new User() {
                 Id = "1",
-                UserName = "rui@gmail.com",
-                NormalizedUserName = "RUI@GMAIL.COM",
-                Email = "rui@gmail.com",
-                NormalizedEmail = "RUI@GMAIL.COM",
+                UserName = "kyaia@gmail.com",
+                NormalizedUserName = "KYAIA@GMAIL.COM",
+                Email = "kyaia@gmail.com",
+                NormalizedEmail = "KYAIA@GMAIL.COM",
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, "123456"),
                 SecurityStamp = string.Empty,
@@ -301,7 +301,6 @@ namespace ProductManagement.Database {
                 MaquinaId = 1,
             });
 
-
             modelBuilder.Entity<Sensor>().HasData(new Sensor()
             {
                 Id = 4,
@@ -309,6 +308,13 @@ namespace ProductManagement.Database {
                 MaquinaId = 1,
             });
 
+            modelBuilder.Entity<Sensor>().HasData(new Sensor()
+            {
+                Id = 5,
+                Nome = "Temperatura Ambiente",
+                MaquinaId = 1,
+            });
+            
             modelBuilder.Entity<Registo>().HasData(new Registo()
             {
                 Id = 1,
