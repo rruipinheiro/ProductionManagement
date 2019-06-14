@@ -18,6 +18,9 @@ namespace ProductManagement.Pages.Historico {
             _context = context;
         }
 
+        [BindProperty]
+        public ItemProducao Fase { get; set; }
+
         public IList<ItemProducao> Producao { get; set; }
 
         [BindProperty(SupportsGet = true)]
@@ -45,12 +48,15 @@ namespace ProductManagement.Pages.Historico {
             Producao = await searchHistorico
                 .Include(p => p.Defeito)
                 .Include(p => p.Estado)
+                .Include(p => p.Fase)
                 .Include(p => p.OrdemProducao.Sola)
                 .ToListAsync();
 
             if (Producao == null) {
                 return NotFound();
             }
+
+            ViewData["FaseId"] = new SelectList(_context.Fase, "Id", "Nome");
 
             return Page();
         }

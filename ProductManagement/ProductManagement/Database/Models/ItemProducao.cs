@@ -38,5 +38,9 @@ namespace ProductManagement.Database.Models {
         public int EstadoId { get; set; }
         public Estado Estado { get; set; }
 
+        [Required]
+        public int FaseId { get; set; }
+        public Fase Fase { get; set; }
+
     }
 }

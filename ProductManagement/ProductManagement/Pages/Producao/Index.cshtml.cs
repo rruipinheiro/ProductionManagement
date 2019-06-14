@@ -128,12 +128,13 @@ namespace ProductManagement.Pages.Producao {
 
             }
 
+            // Casar pares
             if(Producao.Tipo != "Par" && Producao.DefeitoId != 1) {
 
                 var _tipo = Producao.Tipo == "Direito" ? "Esquerdo" : "Direito";
 
                 var parDefeito = await _context.ItemProducao
-                    .Where(p => p.Tamanho == _tamanho && p.Tipo == _tipo && p.DefeitoId == 1 && p.OrdemProducaoId == prodId)
+                    .Where(p => p.Tamanho == _tamanho && p.Tipo == _tipo && p.DefeitoId > 1 && p.OrdemProducaoId == prodId)
                     .Select(p => p.Id)
                     .FirstOrDefaultAsync();
 

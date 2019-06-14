@@ -24,7 +24,7 @@ namespace ProductManagement.Pages {
             [Display(Name = "Nº de defeitos")]
             public int Defeito { get; set; }
             public string Estado { get; set; }
-
+        
         }
 
         [BindProperty(SupportsGet = true)]

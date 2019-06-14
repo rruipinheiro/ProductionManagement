@@ -15,6 +15,7 @@ namespace ProductManagement.Database {
         public DbSet<ItemProducao> ItemProducao { get; set; }
         public DbSet<Defeito> Defeito { get; set; }
         public DbSet<Estado> Estado { get; set; }
+        public DbSet<Fase> Fase { get; set; }
         public DbSet<Maquina> Maquina { get; set; }
         public DbSet<Pausa> Pausa { get; set; }
         public DbSet<Registo> Registo { get; set; }
@@ -76,11 +77,12 @@ namespace ProductManagement.Database {
                 ParId = 1,
                 Tamanho = 40,
                 Quantidade = 300,
-                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
-                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 10, 00),
+                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 12, 00),
                 OrdemProducaoId = 1,
                 DefeitoId = 1,
                 EstadoId = 1,
+                FaseId = 1
             });
 
             modelBuilder.Entity<ItemProducao>().HasData(new ItemProducao() {
@@ -88,11 +90,12 @@ namespace ProductManagement.Database {
                 ParId = 2,
                 Tamanho = 20,
                 Quantidade = 300,
-                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
-                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 11, 20),
+                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 12, 00),
                 OrdemProducaoId = 1,
                 DefeitoId = 2,
                 EstadoId = 1,
+                FaseId = 1
             });
 
 
@@ -102,11 +105,12 @@ namespace ProductManagement.Database {
                 ParId = 1,
                 Tamanho = 20,
                 Quantidade = 300,
-                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
-                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 10, 03),
+                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 13, 20),
                 OrdemProducaoId = 2,
                 DefeitoId = 2,
                 EstadoId = 3,
+                FaseId = 1
             });
 
             modelBuilder.Entity<ItemProducao>().HasData(new ItemProducao()
@@ -115,13 +119,13 @@ namespace ProductManagement.Database {
                 ParId = 2,
                 Tamanho = 20,
                 Quantidade = 300,
-                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
-                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 10, 00),
+                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 12, 00),
                 OrdemProducaoId = 2,
                 DefeitoId = 2,
                 EstadoId = 2,
+                FaseId = 1
             });
-
             
             modelBuilder.Entity<ItemProducao>().HasData(new ItemProducao()
             {
@@ -129,11 +133,12 @@ namespace ProductManagement.Database {
                 ParId = 1,
                 Tamanho = 20,
                 Quantidade = 300,
-                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
-                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 10, 00),
+                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 12, 00),
                 OrdemProducaoId = 3,
                 DefeitoId = 2,
                 EstadoId = 3,
+                FaseId = 1
             });
 
             modelBuilder.Entity<ItemProducao>().HasData(new ItemProducao()
@@ -142,11 +147,12 @@ namespace ProductManagement.Database {
                 ParId = 2,
                 Tamanho = 20,
                 Quantidade = 300,
-                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
-                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second),
+                Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 10, 00),
+                Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 12, 00),
                 OrdemProducaoId = 3,
                 DefeitoId = 2,
                 EstadoId = 3,
+                FaseId = 1
             });
 
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
@@ -204,15 +210,13 @@ namespace ProductManagement.Database {
                 Id = 9,
                 Nome = "Solas delaminadas"
             });
-
-
+            
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
                 Id = 10,
                 Nome = "Solas cor incorreta"
             });
-
-
+            
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
                 Id = 11,
@@ -225,7 +229,6 @@ namespace ProductManagement.Database {
                 Id = 12,
                 Nome = "Solas com contaminações"
             });
-
 
             modelBuilder.Entity<Defeito>().HasData(new Defeito()
             {
@@ -249,6 +252,24 @@ namespace ProductManagement.Database {
             {
                 Id = 3,
                 Nome = "Produzido"
+            });
+
+            modelBuilder.Entity<Fase>().HasData(new Fase()
+            {
+                Id = 1,
+                Nome = "Produção"
+            });
+
+            modelBuilder.Entity<Fase>().HasData(new Fase()
+            {
+                Id = 2,
+                Nome = "Envernizamento"
+            });
+
+            modelBuilder.Entity<Fase>().HasData(new Fase()
+            {
+                Id = 3,
+                Nome = "Embalamento"
             });
 
             modelBuilder.Entity<Maquina>().HasData(new Maquina()
