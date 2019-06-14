@@ -17,11 +17,11 @@
     </div>
     <div class="mt-4 row">
         <div class="col-sm-12 col-md-6">
-            <h6>Ordem Produção @("OP00" + ViewData["OrdemProducao"])</h6>
+            <h6>Ordem Produção @("OP00" + ViewData["OrdemProducaoId"])</h6>
         </div>
         <div class="col-sm-12 col-md-6 text-right">
             <div class="form-group">
-                <form>
+                <form method="get">
                     <select class="form-control-sm" asp-for="Defeitos">
                         <option value="Todos">Todos</option>
                         <option value="SemDefeito">Sem Defeito</option>
@@ -35,48 +35,53 @@
 </div>
 
 <div class="table-responsive">
-    <table class="table table-striped">
-        <thead class="thead-blue">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Producao[0].ParId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Producao[0].OrdemProducao.Sola)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Producao[0].Tamanho)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Producao[0].Quantidade)
-                </th>
-                <th>
-                    Fase
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Producao[0].Defeito)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Producao) {
-            <tr ondblclick="redirect(@item.OrdemProducaoId, @item.ParId)">
-                <td>@("P00" + item.ParId)</td>
-                <td>@Html.DisplayFor(model => item.OrdemProducao.Sola.Nome)</td>
-                <td>@Html.DisplayFor(model => item.Tamanho)</td>
-                <td><input class="form-control form-control-sm" type="text" name="name" value="@Html.DisplayFor(model => item.Quantidade)" /></td>
-                <td>
-                    <select class="form-control-sm" asp-for="Fase.FaseId" asp-items="ViewBag.FaseId"></select>
-                    <span asp-validation-for="Fase.FaseId" class="text-danger"></span>
-                    <button class="btn btn-sm btn-dark">Save</button>
-                </td>
-                <td>
-                    <input type="checkbox" checked="@(item.Defeito.Id > 1 ? true : false)">
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
+        <table class="table table-striped">
+            <thead class="thead-blue">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Producao[0].ParId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Producao[0].OrdemProducao.Sola)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Producao[0].Tamanho)
+                    </th>
+                    <th>
+                        Fase
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Producao[0].Defeito)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in Model.Producao) {
+                <tr ondblclick="redirect(@item.OrdemProducaoId, @item.ParId)">
+                    <td>@("P00" + item.ParId)</td>
+                    <td>@item.OrdemProducao.Sola.Nome</td>
+                    <td>@item.Tamanho</td>
+
+                    @if(item.FaseId != 3 && item.EstadoId == 3 && item.DefeitoId == 1) {
+                        <td>
+                            <form method="post">
+                                <select class="form-control-sm" asp-for="ItemProducao.FaseId" asp-items="ViewBag.FaseId"></select>
+                                <span asp-validation-for="ItemProducao.FaseId" class="text-danger"></span>
+
+                                <button class="btn btn-sm btn-dark" type="submit" asp-route-prodId="@item.OrdemProducaoId" asp-route-parId="@item.ParId" asp-page-handler="Fase">Guardar</button>
+                            </form>
+                        </td>
+                    } else {
+                        <td>@item.Fase.Nome</td>
+                    }
+
+                    <td>
+                        <input type="checkbox" checked="@(item.Defeito.Id > 1 ? true : false)">
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
 </div>
 
 <script type="text/javascript">

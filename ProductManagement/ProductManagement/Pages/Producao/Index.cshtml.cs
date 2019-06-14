@@ -120,12 +120,11 @@ namespace ProductManagement.Pages.Producao {
             // Apenas adicona um novo Item de Produção se tiver defeito
             if (Producao.DefeitoId > 1) {
 
-                _context.ItemProducao.Add(new ItemProducao { ParId = _parId + 1, Tamanho = _tamanho, Quantidade = _quantidade, Inicio = Producao.Inicio, Fim = Producao.Fim, OrdemProducaoId = _orderProducaoId, DefeitoId = 1, EstadoId = 1 });
+                _context.ItemProducao.Add(new ItemProducao { ParId = _parId + 1, Tamanho = _tamanho, Quantidade = _quantidade, Inicio = Producao.Inicio, Fim = Producao.Fim, OrdemProducaoId = _orderProducaoId, DefeitoId = 1, EstadoId = 1, FaseId = 1 });
 
                 TempData["succes_message"] = "Defeito adicionado com sucesso!";
 
                 await _context.SaveChangesAsync();
-
             }
 
             // Casar pares
@@ -134,14 +133,13 @@ namespace ProductManagement.Pages.Producao {
                 var _tipo = Producao.Tipo == "Direito" ? "Esquerdo" : "Direito";
 
                 var parDefeito = await _context.ItemProducao
-                    .Where(p => p.Tamanho == _tamanho && p.Tipo == _tipo && p.DefeitoId > 1 && p.OrdemProducaoId == prodId)
+                    .Where(p => p.Tamanho == _tamanho && p.Tipo == _tipo && p.DefeitoId > 1 && p.OrdemProducaoId == prodId && p.FaseId == 1)
                     .Select(p => p.Id)
                     .FirstOrDefaultAsync();
 
                 if(parDefeito > 0) {
                     TempData["Casar"] = "Tem para casar sim!!!!  " + parDefeito; 
                 }
-
             }
 
             return RedirectToPage("./Index", new { prodId, parId });

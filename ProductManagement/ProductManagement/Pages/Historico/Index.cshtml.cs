@@ -19,9 +19,9 @@ namespace ProductManagement.Pages.Historico {
         }
 
         [BindProperty]
-        public ItemProducao Fase { get; set; }
+        public ItemProducao ItemProducao { get; set; }
 
-        public IList<ItemProducao> Producao { get; set; }
+        public List<ItemProducao> Producao { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string Defeitos { get; set; }
@@ -32,7 +32,7 @@ namespace ProductManagement.Pages.Historico {
                 return NotFound();
             }
             
-            ViewData["OrdemProducao"] = _context.OrdemProducao.Where(op => op.Id.Equals(id)).Select(op => op.Id).First();
+            ViewData["OrdemProducaoId"] = _context.OrdemProducao.Where(op => op.Id.Equals(id)).Select(op => op.Id).First();
 
             var searchHistorico = _context.ItemProducao.Where(p => p.OrdemProducaoId.Equals(id));
 
@@ -54,11 +54,38 @@ namespace ProductManagement.Pages.Historico {
 
             if (Producao == null) {
                 return NotFound();
-            }
+            }   
 
             ViewData["FaseId"] = new SelectList(_context.Fase, "Id", "Nome");
 
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostFaseAsync(int? id, int? parId) {
+
+            if(id == null || parId == null) {
+                return NotFound();
+            }
+
+            if(!ModelState.IsValid) {
+                string messages = string.Join("; ", ModelState.Values
+                                        .SelectMany(x => x.Errors)
+                                        .Select(x => x.ErrorMessage));
+
+                Console.WriteLine(" =============== {0} ===============", messages);
+
+                return Page();
+            }
+
+
+            var result = await _context.ItemProducao
+               .Where(p => p.OrdemProducaoId == id && p.ParId == parId)
+               .SingleOrDefaultAsync();
+
+            result.FaseId = ItemProducao.FaseId;
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index", new { id });
         }
 
     }
