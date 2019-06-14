@@ -130,12 +130,15 @@ namespace ProductManagement.Pages.Producao {
 
             if(Producao.Tipo != "Par" && Producao.DefeitoId != 1) {
 
-                var parDefeito = await _context.ItemProducao
-                    .Where(p => p.Tamanho == _tamanho && p.Tipo != Producao.Tipo && p.DefeitoId == 1 && p.OrdemProducaoId == prodId)
-                    .AnyAsync();
+                var _tipo = Producao.Tipo == "Direito" ? "Esquerdo" : "Direito";
 
-                if(parDefeito) {
-                    TempData["Casar"] = "Tem para casar sim!!!!";
+                var parDefeito = await _context.ItemProducao
+                    .Where(p => p.Tamanho == _tamanho && p.Tipo == _tipo && p.DefeitoId == 1 && p.OrdemProducaoId == prodId)
+                    .Select(p => p.Id)
+                    .FirstOrDefaultAsync();
+
+                if(parDefeito > 0) {
+                    TempData["Casar"] = "Tem para casar sim!!!!  " + parDefeito; 
                 }
 
             }
