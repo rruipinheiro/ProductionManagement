@@ -45,7 +45,8 @@ namespace ProductManagement {
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
 
-            if (env.IsDevelopment()) {
+
+            if(env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             } else {
@@ -53,6 +54,8 @@ namespace ProductManagement {
                 app.UseHsts();
             }
 
+            app.UseStatusCodePages();
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

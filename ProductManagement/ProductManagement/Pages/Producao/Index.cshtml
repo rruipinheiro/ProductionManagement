@@ -1,0 +1,133 @@
+﻿@page
+@model ProductManagement.Pages.Producao.IndexModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="pb-2 mt-4 mb-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <h2>@ViewData["ParName"] Tamanho @ViewData["ParSize"]</h2>
+        </div>
+        <div class="col-sm-12 col-md-6 text-right">
+            <h2>
+                <a asp-area="" asp-page="../Index" class="back_icon"><i class="far fa-arrow-alt-circle-left"></i></a>
+            </h2>
+        </div>
+    </div>
+</div>
+
+@if(TempData["ParCasar"] != null) {
+    <div class="modal" tabindex="-1" role="dialog" id="modalParCasar">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Alerta</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>@TempData["ParCasar"]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            $(window).on('load', function () {
+                $('#modalParCasar').modal('show');
+            });
+
+        });
+    </script>
+}
+
+<div class="pb-2 mt-4 mb-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2>@ViewData["TemperaturaSensor"] ºC</h2>
+                    <p>Temperatura</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2>@ViewData["PressaoSensor"] Bar</h2>
+                    <p>Pressão</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2>@ViewData["VelocidadeInjecaoSensor"]</h2>
+                    <p>Velocidade de Injecao</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2>@ViewData["VelocidadeCarregamentoSensor"]</h2>
+                    <p>Velocidade de Carregamento</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="productionCounter d-flex justify-content-start">
+        <div class="text-center">
+            <h1>@(Model.Producao.Fim - Model.Producao.Inicio)</h1>
+            <p>Tempo de produção</p>
+        </div>
+    </div>
+
+    <div class="d-flex flex-wrap justify-content-between productionBottomContainer">
+        <div>
+            @if(TempData["succes_message"] != null) {
+                <div class="alert alert-success" role="alert">
+                    @TempData["succes_message"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Producao.Id" />
+
+                <div class="form-group">
+                    <select class="form-control-sm" asp-for="Producao.Tipo">
+                        <option value="Par">Par</option>
+                        <option value="Esquerdo">Esquerdo</option>
+                        <option value="Direito">Direito</option>
+                    </select>
+
+                    <select class="form-control-sm" asp-for="Producao.DefeitoId" asp-items="ViewBag.DefeitoId"></select>
+                    <span asp-validation-for="Producao.DefeitoId" class="text-danger"></span>
+
+                    <input class="btn btn-sm btn-dark" type="submit" asp-route-prodId="@(ViewContext.HttpContext.Request.Query["prodId"].ToString())" asp-route-parId="@(ViewContext.HttpContext.Request.Query["parId"].ToString())" asp-page-handler="Defeito" value="Adicionar Defeito" />
+                </div>
+            </form>
+        </div>
+        <div class="productionNavigation">
+            <a asp-area="" asp-page="" asp-route-prodId="@(HttpContext.Request.Query["prodId"].ToString())" asp-route-parId="@TempData["backPar"]">
+                <i class="fas fa-arrow-circle-left icon_navigation"></i>
+            </a>
+            <span>
+                P00@(HttpContext.Request.Query["parId"].ToString())
+            </span>
+            <a asp-area="" asp-page="" asp-route-prodId="@(HttpContext.Request.Query["prodId"].ToString())" asp-route-parId="@TempData["nextPar"]">
+                <i class="fas fa-arrow-circle-right icon_navigation"></i>
+            </a>
+        </div>
+    </div>
+</div>

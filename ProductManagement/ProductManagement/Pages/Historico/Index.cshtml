@@ -1,60 +1,93 @@
-﻿@page
+﻿@page "{id?}/{Defeitos?}"
 @model ProductManagement.Pages.Historico.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Details";
 }
+<div class="pb-2 mt-4 mb-4">
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <h2>Histórico</h2>
+        </div>
+        <div class="col-sm-12 col-md-6 text-right">
+            <h2>
+                <a asp-area="" asp-page="../Index" class="back_icon"><i class="far fa-arrow-alt-circle-left"></i></a>
+            </h2>
+        </div>
+    </div>
+    <div class="mt-4 row">
+        <div class="col-sm-12 col-md-6">
+            <h6>Ordem Produção @("OP00" + ViewData["OrdemProducaoId"])</h6>
+        </div>
+        <div class="col-sm-12 col-md-6 text-right">
+            <div class="form-group">
+                <form method="get">
+                    <select class="form-control-sm" asp-for="Defeitos">
+                        <option value="Todos">Todos</option>
+                        <option value="SemDefeito">Sem Defeito</option>
+                        <option value="ComDefeito">Com Defeito</option>
+                    </select>
+                    <input class="btn btn-sm btn-dark" type="submit" value="Pesquisar">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h1>Index</h1>
+<div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-blue">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Producao[0].ParId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Producao[0].OrdemProducao.Sola)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Producao[0].Tamanho)
+                    </th>
+                    <th>
+                        Fase
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Producao[0].Defeito)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in Model.Producao) {
+                <tr ondblclick="redirect(@item.OrdemProducaoId, @item.ParId)">
+                    <td>@("P00" + item.ParId)</td>
+                    <td>@item.OrdemProducao.Sola.Nome</td>
+                    <td>@item.Tamanho</td>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Producao[0].Inicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Producao[0].Fim)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Producao[0].OrdemProducao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Producao[0].Defeito)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Producao[0].Estado)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Producao) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Inicio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fim)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrdemProducao.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Defeito.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado.Id)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                    @if(item.FaseId == 1 && item.EstadoId == 3 && item.DefeitoId == 1) {
+                    <td>
+                        <form method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <select class="form-control-sm" asp-for="ProducaoFase.FaseId" asp-items="ViewBag.FaseId"></select>
+                            <span asp-validation-for="ProducaoFase.FaseId" class="text-danger"></span>
+
+                            <input class="btn btn-sm btn-dark" type="submit" asp-route-prodId="@item.OrdemProducaoId" asp-route-parId="@item.ParId" asp-page-handler="Fase" value="Guardar" />
+                        </form>
+                    </td>
+                    } else {
+                        <td>@item.Fase.Nome</td>
+                    }
+
+                    <td>
+                        <input type="checkbox" checked="@(item.Defeito.Id > 1 ? true : false)">
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+</div>
+
+<script type="text/javascript">
+    function redirect(prodId, parId) {
+        location.href = "/Producao?prodId=" + prodId + "&parId=" + parId;
+    }
+</script>
