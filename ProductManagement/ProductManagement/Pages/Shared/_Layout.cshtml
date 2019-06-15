@@ -26,20 +26,20 @@
         <div class="header_right d-flex text-white">
             @{
                 if (ViewContext.RouteData.Values["Page"].ToString() == "/Producao/Index") {
-                    <div class="pausa_inicio">
+                    if(TempData["PausaInicio"] == null) {
+                    <div class="pausa" id="pausa_inicio">
                         <form method="post">
-                            <input class="btn btn-sm btn-info" onclick="@TempData["pausa"] = "true";" id="btn-pausainicio" type="submit" asp-route-prodId="@(ViewContext.HttpContext.Request.Query["prodId"].ToString())" asp-route-parId="@(ViewContext.HttpContext.Request.Query["parId"].ToString())" asp-page-handler="PausaInicio" value="Pausa">
+                            <input class="btn btn-sm btn-info" id="btn-pausainicio" type="submit" asp-route-prodId="@(ViewContext.HttpContext.Request.Query["prodId"].ToString())" asp-route-parId="@(ViewContext.HttpContext.Request.Query["parId"].ToString())" asp-page-handler="PausaInicio" value="Pausa">
                         </form>
                     </div>
-
-                        if (TempData["pausa"] != null) {
-                            <div class="pausa_fim">
-                                <form method="post">
-                                    <input class="btn btn-sm btn-danger" id="btn-pausafim" type="submit" asp-route-prodId="@(ViewContext.HttpContext.Request.Query["prodId"].ToString())" asp-route-parId="@(ViewContext.HttpContext.Request.Query["parId"].ToString())" asp-page-handler="PausaFim" value="Pausa">
-                                </form>
-                            </div>
-                        }
-                   
+                    }
+                    if(TempData["PausaInicio"] != null) {
+                        <div class="pausa" id="pausa_fim">
+                            <form method="post">
+                                <input class="btn btn-sm btn-danger" id="btn-pausafim" type="submit" asp-route-prodId="@(ViewContext.HttpContext.Request.Query["prodId"].ToString())" asp-route-parId="@(ViewContext.HttpContext.Request.Query["parId"].ToString())" asp-page-handler="PausaFim" value="Pausa">
+                            </form>
+                        </div>
+                    }
                 }
             }
             <span id="temperatura_ambiente_sensor"></span>

@@ -46,14 +46,11 @@ tr:hover {
     font-size: 24px;
 }
 
-.pausa_inicio input {
+.pausa input {
     margin-top: 5px;
     margin-right: 20px;
 }
 
-.pausa_fim {
-    /*display: none !important;*/
-}
 /** Main container **/
 .main {
     margin: 50px 25px;

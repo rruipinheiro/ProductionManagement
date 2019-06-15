@@ -165,6 +165,8 @@ namespace ProductManagement.Pages.Producao {
             _context.Pausa.Add(pausa);
             await _context.SaveChangesAsync();
 
+            TempData["PausaInicio"] = true;
+
             return RedirectToPage("./Index", new { prodId, parId });
         }
         
