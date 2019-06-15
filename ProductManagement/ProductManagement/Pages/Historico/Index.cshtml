@@ -62,15 +62,17 @@
                     <td>@item.OrdemProducao.Sola.Nome</td>
                     <td>@item.Tamanho</td>
 
-                    @if(item.FaseId != 3 && item.EstadoId == 3 && item.DefeitoId == 1) {
-                        <td>
-                            <form method="post">
-                                <select class="form-control-sm" asp-for="ItemProducao.FaseId" asp-items="ViewBag.FaseId"></select>
-                                <span asp-validation-for="ItemProducao.FaseId" class="text-danger"></span>
+                    @if(item.FaseId == 1 && item.EstadoId == 3 && item.DefeitoId == 1) {
+                    <td>
+                        <form method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                                <button class="btn btn-sm btn-dark" type="submit" asp-route-prodId="@item.OrdemProducaoId" asp-route-parId="@item.ParId" asp-page-handler="Fase">Guardar</button>
-                            </form>
-                        </td>
+                            <select class="form-control-sm" asp-for="ProducaoFase.FaseId" asp-items="ViewBag.FaseId"></select>
+                            <span asp-validation-for="ProducaoFase.FaseId" class="text-danger"></span>
+
+                            <input class="btn btn-sm btn-dark" type="submit" asp-route-prodId="@item.OrdemProducaoId" asp-route-parId="@item.ParId" asp-page-handler="Fase" value="Guardar" />
+                        </form>
+                    </td>
                     } else {
                         <td>@item.Fase.Nome</td>
                     }

@@ -93,11 +93,10 @@ namespace ProductManagement.Database {
                 Inicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 11, 20),
                 Fim = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 12, 00),
                 OrdemProducaoId = 1,
-                DefeitoId = 2,
+                DefeitoId = 1,
                 EstadoId = 1,
                 FaseId = 1
             });
-
 
             modelBuilder.Entity<ItemProducao>().HasData(new ItemProducao()
             {

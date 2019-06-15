@@ -19,7 +19,7 @@ namespace ProductManagement.Pages.Historico {
         }
 
         [BindProperty]
-        public ItemProducao ItemProducao { get; set; }
+        public ItemProducao ProducaoFase { get; set; }
 
         public List<ItemProducao> Producao { get; set; }
 
@@ -54,16 +54,16 @@ namespace ProductManagement.Pages.Historico {
 
             if (Producao == null) {
                 return NotFound();
-            }   
+            }
 
             ViewData["FaseId"] = new SelectList(_context.Fase, "Id", "Nome");
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostFaseAsync(int? id, int? parId) {
+        public async Task<IActionResult> OnPostFaseAsync(int? prodId, int? parId) {
 
-            if(id == null || parId == null) {
+            if(prodId == null || parId == null) {
                 return NotFound();
             }
 
@@ -77,15 +77,14 @@ namespace ProductManagement.Pages.Historico {
                 return Page();
             }
 
-
             var result = await _context.ItemProducao
-               .Where(p => p.OrdemProducaoId == id && p.ParId == parId)
+               .Where(p => p.OrdemProducaoId == prodId && p.ParId == parId)
                .SingleOrDefaultAsync();
 
-            result.FaseId = ItemProducao.FaseId;
+            result.FaseId = ProducaoFase.FaseId;
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index", new { id });
+            return RedirectToPage("./Index", new { id = prodId });
         }
 
     }

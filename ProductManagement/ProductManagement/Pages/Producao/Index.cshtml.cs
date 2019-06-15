@@ -108,7 +108,7 @@ namespace ProductManagement.Pages.Producao {
                 .SingleOrDefaultAsync();
 
              result.DefeitoId = Producao.DefeitoId;
-             result.Tipo = Producao.Tipo;
+             result.Tipo = Producao.DefeitoId > 1 ? Producao.Tipo : null;
              await _context.SaveChangesAsync();
 
             var _orderProducaoId = await _context.ItemProducao.Where(p => p.Id == Producao.Id).Select(s => s.OrdemProducaoId).FirstOrDefaultAsync();
