@@ -1,2 +1,3 @@
 # ProductionManagement
-Simple Production Management Software (University Project)
+
+Production Management System (University Project)
