@@ -1,3 +1,3 @@
 # ProductionManagement
 
-Production Management System (University Project)
+Production Management System using .net core web app (University Project)
